@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#2563eb"/>
+<title>Electricity Bill Slab Tariff Calculator — Pakistan (MEPCO, LESCO, FESCO)</title>
+<meta name="description" content="Pakistan electricity bill slab calculator: MEPCO/LESCO/FESCO residential tariffs, slab-by-slab breakdown, GST and taxes. Rates editable."/>
+<link rel="canonical" href="https://azaan0000.github.io/toolspark/electricity-bill-slab-tariff-calculator.html"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232563eb'/%3E%3Cstop offset='1' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Electricity Bill Slab Tariff Calculator — Pakistan (MEPCO, LESCO, FESCO)"/>
+<meta property="og:description" content="Pakistan electricity bill slab calculator: MEPCO/LESCO/FESCO residential tariffs, slab-by-slab breakdown, GST and taxes. Rates editable."/>
+<meta property="og:url" content="https://azaan0000.github.io/toolspark/electricity-bill-slab-tariff-calculator.html"/>
+<meta name="twitter:card" content="summary"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Electricity Bill Slab Tariff Calculator (Pakistan)", "description": "Pakistan electricity bill slab calculator: MEPCO/LESCO/FESCO residential tariffs, slab-by-slab breakdown, GST and taxes. Rates editable.", "url": "https://azaan0000.github.io/toolspark/electricity-bill-slab-tariff-calculator.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "ToolSpark", "url": "https://azaan0000.github.io/toolspark/"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why is my bill higher than units × one rate?", "acceptedAnswer": {"@type": "Answer", "text": "Because Pakistan uses cumulative slabs: each slab of units is billed at its own rate, and once you cross a slab (e.g. 200→201 units) the marginal units cost more. There are also protected vs non-protected categories: protected consumers (with low recent usage) pay less on the same units."}}, {"@type": "Question", "name": "What is FPA and why isn't it included?", "acceptedAnswer": {"@type": "Answer", "text": "FPA (Fuel Price Adjustment) is a per-unit surcharge NEPRA revises every month based on generation fuel costs. It can differ wildly between bills, so an honest calculator cannot predict it — this tool shows your slab-based energy charges plus standard taxes, and tells you to check FPA on your actual bill."}}, {"@type": "Question", "name": "Which DISCO rates are built in?", "acceptedAnswer": {"@type": "Answer", "text": "Residential non-protected presets for MEPCO (3.95/8.27/13.27/16.62/19.26), LESCO (4.16/8.48/13.48/16.83/19.47) and FESCO (4.03/8.35/13.35/16.70/19.34) PKR/kWh across the five slabs, as of October 2026. Every rate is editable — set exact values from your latest bill for a precise estimate."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ToolSpark", "item": "https://azaan0000.github.io/toolspark/"}, {"@type": "ListItem", "position": 2, "name": "Electricity Bill Slab Tariff Calculator (Pakistan)", "item": "https://azaan0000.github.io/toolspark/electricity-bill-slab-tariff-calculator.html"}]}</script>
+<style>
+:root{
+  --bg:#f6f8fc;--surface:#ffffff;--surface2:#eef1f9;--text:#0e1430;--muted:#586179;--border:#e4e8f4;
+  --p1:#2563eb;--p2:#7c3aed;--p3:#0891b2;
+  --grad:linear-gradient(120deg,var(--p1),var(--p2) 45%,var(--p3));
+  --shadow:0 8px 30px rgba(37,99,235,.12);--shadow-lg:0 24px 60px rgba(37,99,235,.18);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0a0e1d;--surface:#141a30;--surface2:#1b2240;--text:#eceffa;--muted:#98a2c4;--border:#232b52;
+  --shadow:0 8px 30px rgba(0,0,0,.35);--shadow-lg:0 24px 60px rgba(0,0,0,.5)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+a{color:var(--p1);text-decoration:none}
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--border)}
+.navin{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--text);letter-spacing:-.02em}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
+.links{display:flex;gap:22px;font-size:14.5px;font-weight:600}
+.links a{color:var(--muted);transition:color .2s}
+.links a:hover{color:var(--text)}
+@media(max-width:620px){.links{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:13px;box-shadow:var(--shadow);transition:transform .22s,box-shadow .22s;cursor:pointer;border:0;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn-sm{padding:9px 18px;font-size:13.5px;border-radius:11px}
+.hero{position:relative;padding:84px 0 56px;overflow:hidden}
+.hero.compact{padding:56px 0 30px}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none}
+.glow.g1{width:420px;height:420px;background:#7c3aed;top:-160px;left:-100px}
+.glow.g2{width:360px;height:360px;background:#2563eb;top:-60px;right:-120px;opacity:.35}
+@media(prefers-color-scheme:dark){.glow{opacity:.28}}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--muted);box-shadow:var(--shadow)}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--grad);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+h1{font-size:clamp(32px,5.2vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:22px 0 16px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(15.5px,2.2vw,18.5px);color:var(--muted);max-width:680px}
+.cta-row{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--muted)}
+section{padding:30px 0}
+.sec-title{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-sub{color:var(--muted);max-width:600px;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 24px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;display:block;color:var(--text)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.card .tile{width:48px;height:48px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:var(--shadow)}
+.card h3{font-size:17.5px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+.card p{font-size:14px;color:var(--muted);line-height:1.6}
+.card .cat{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p1);background:color-mix(in srgb,var(--p1) 9%,transparent);border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.card .go{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--p1)}
+.card:hover .go{text-decoration:underline}
+.crumbs{font-size:13px;color:var(--muted);font-weight:600}
+.crumbs a{color:var(--muted)}
+.crumbs a:hover{color:var(--p1)}
+.capsule{display:flex;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.capsule .tag{flex-shrink:0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--grad);border-radius:8px;padding:5px 10px;height:fit-content;margin-top:3px}
+.capsule p{font-size:15px;color:var(--text)}
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:var(--shadow-lg);margin-top:10px}
+.calc h3{font-size:19px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.calc .hint{font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 18px}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:14px 2px 7px}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+textarea{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:400;line-height:1.55;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p1);box-shadow:0 0 0 4px color-mix(in srgb,var(--p1) 18%,transparent)}
+input[type=color]{padding:5px;height:46px;cursor:pointer}
+input[type=range]{padding:0;accent-color:var(--p1);border:none;background:none;box-shadow:none}
+input[type=date]{color-scheme:light dark}
+input[type=checkbox]{width:auto}
+.result{margin-top:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--p1) 8%,var(--surface)),color-mix(in srgb,var(--p3) 8%,var(--surface)));border:1px solid color-mix(in srgb,var(--p1) 22%,var(--border));border-radius:16px;padding:6px 20px}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px dashed var(--border);font-size:14.5px;color:var(--muted)}
+.r-row:last-child{border-bottom:none}
+.r-row b{font-size:16px;color:var(--text);font-weight:800;text-align:right}
+.r-row b.good{color:#0c9d61}
+.r-row b.bad{color:#e11d48}
+@media(prefers-color-scheme:dark){.r-row b.good{color:#34d399}.r-row b.bad{color:#fb7185}}
+.r-note{padding:12px 0;font-size:14px;color:var(--muted)}
+.formula{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:var(--text);overflow-x:auto;margin:14px 0 18px;white-space:nowrap}
+h2{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;margin:38px 0 10px}
+h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:26px 0 8px}
+.prose p{margin:0 0 16px;font-size:15.5px;color:var(--muted)}
+.prose p b{color:var(--text)}
+.prose ul{margin:0 0 16px 22px;color:var(--muted);font-size:15.5px}
+.prose li{margin-bottom:8px}
+details{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin:10px 0;transition:border-color .2s}
+details[open]{border-color:color-mix(in srgb,var(--p1) 35%,var(--border))}
+summary{cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:20px;font-weight:600;color:var(--muted);flex-shrink:0;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg);color:var(--p1)}
+details p{margin-top:12px;font-size:14.5px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.feat .tile{width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat h3{margin:0 0 6px;font-size:16.5px}
+.feat p{font-size:14px;color:var(--muted)}
+.copy-btn{font-size:12.5px;padding:8px 16px;margin-left:10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.code{font-family:ui-monospace,monospace;font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:4px 9px;color:var(--text)}
+.codechip{cursor:pointer;font-family:ui-monospace,monospace;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 13px;color:var(--text);font-weight:600}
+.codechip:hover{border-color:var(--p1)}
+.preview-zone{border-radius:16px;padding:34px 22px;background:linear-gradient(135deg,#f59e0b,#ec4899,#8b5cf6,#3b82f6);background-size:300% 300%;animation:slide 9s linear infinite;display:flex;justify-content:center}
+@keyframes slide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.glass-card{width:100%;max-width:430px;padding:26px;color:#fff}
+.glass-card h4{font-size:19px;font-weight:800;margin-bottom:4px}
+.glass-card p{font-size:13.5px;opacity:.85}
+table.slab{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+table.slab th{text-align:left;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:6px 4px;border-bottom:1px solid var(--border)}
+table.slab td{padding:8px 4px;border-bottom:1px dashed var(--border)}
+table.slab input{padding:8px 10px;font-size:13.5px}
+.seg{display:grid;grid-template-columns:1fr 130px 44px;gap:10px;align-items:end;margin-bottom:10px}
+@media(max-width:640px){.seg{grid-template-columns:1fr 110px 44px}}
+.seg button{height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:16px;cursor:pointer;font-weight:700}
+footer{border-top:1px solid var(--border);margin-top:56px;padding:40px 0 48px;background:var(--surface)}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.fbrand{max-width:340px}
+.fbrand p{font-size:13.5px;color:var(--muted);margin-top:12px}
+.flinks{display:flex;gap:60px;flex-wrap:wrap}
+.fcol h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+.fcol a{display:block;font-size:14px;color:var(--text);margin-bottom:8px;font-weight:600}
+.fcol a:hover{color:var(--p1)}
+.copy{margin-top:36px;font-size:13px;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap navin">
+  <a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+  <nav class="links"><a href="./#tools">All tools</a><a href="./#why">Why free</a></nav>
+  <a class="btn btn-sm" href="./#tools">Get started</a>
+</div></header>
+
+<div class="hero compact"><div class="glow g1"></div><div class="glow g2"></div><div class="wrap" style="position:relative">
+  <nav class="crumbs"><a href="./">ToolSpark</a> › Electricity Bill Slab Tariff Calculator (Pakistan)</nav>
+  <h1 style="font-size:clamp(28px,4.4vw,42px)">Electricity Bill Slab Tariff Calculator (Pakistan) <span class="grad-text">— free, instant, private</span></h1>
+  <p class="lead">Enter your units and see the exact slab-by-slab bill math for MEPCO, LESCO, FESCO — with editable rates for any DISCO.</p>
+  <div class="capsule"><span class="tag">Quick answer</span><p>Pakistan's residential electricity bill uses a slab system: the first 100 units are charged the cheapest rate, the next 100 at a higher rate, and so on — NOT your total units at one rate. That is why 350 units can cost far more than 3.5× the cost of 100 units. This calculator shows each slab's exact share, adds duty, GST and fixed charges, and comes with MEPCO, LESCO and FESCO presets.</p></div>
+  <div class="calc">
+    <h3 style="margin-bottom:10px">Electricity Bill Slab Tariff Calculator (Pakistan)</h3>
+    <p class="hint">Everything runs locally in your browser — nothing is uploaded, ever.</p>
+    <div class="grid2">
+<div><label>Units consumed this month (kWh)</label><input type="number" id="units" value="350" min="0" step="1"></div>
+<div><label>DISCO preset (rates editable below)</label><select id="disco">
+<option value="mepco">MEPCO — default</option><option value="lesco">LESCO</option><option value="fesco">FESCO</option></select></div>
+</div>
+<label style="margin-top:18px">Slab rates (PKR/kWh) — edit to match your latest bill</label>
+<table class="slab" id="slabT"></table>
+<div class="grid3">
+<div><label>Electricity duty (%)</label><input type="number" id="duty" value="1.5" min="0" step="0.1"></div>
+<div><label>GST (%)</label><input type="number" id="gst" value="17" min="0" step="0.5"></div>
+<div><label>Fixed charges + meter rent (PKR)</label><input type="number" id="fixed" value="100" min="0" step="10"></div>
+</div>
+<div class="result" id="out"></div>
+  </div>
+</div></div>
+<section><div class="wrap">
+  <h2>How the electricity bill slab tariff calculator works</h2>
+  <div class="formula">Bill = Σ (units in each slab × slab rate) + electricity duty% + GST% + fixed charges &nbsp;·&nbsp; Slabs: 1–100, 101–200, 201–300, 301–700, 701+</div>
+  <div class="prose"><p>The single most common misunderstanding is the slab (tehtar) system: rates apply <b>per slab, cumulatively</b>. If you consume 350 units, the first 100 are billed at the cheapest slab, units 101–200 at the second, 201–300 at the third, and only units 301–350 at the fourth. Crossing a slab boundary raises only the marginal units' rate.</p>
+<p>Beyond energy charges, a typical bill adds:</p>
+<ul>
+<li><b>Electricity duty</b> — about 1.5% on domestic consumers</li>
+<li><b>GST</b> — 17% on the energy cost</li>
+<li><b>FPA (fuel price adjustment)</b> — the big variable: set monthly by NEPRA, it can swing a bill by thousands of rupees. This tool deliberately leaves it out and says so, rather than pretending to know it.</li>
+<li><b>Meter rent, TV fee, bank charges, surcharges</b> — small fixed items</li>
+</ul>
+<p>Default rates are published residential (non-protected) rates for MEPCO, LESCO and FESCO as of October 2026 — every rate is editable, so match your own bill and the math is exact for you.</p></div>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Why is my bill higher than units × one rate?</summary><p>Because Pakistan uses cumulative slabs: each slab of units is billed at its own rate, and once you cross a slab (e.g. 200→201 units) the marginal units cost more. There are also protected vs non-protected categories: protected consumers (with low recent usage) pay less on the same units.</p></details><details><summary>What is FPA and why isn't it included?</summary><p>FPA (Fuel Price Adjustment) is a per-unit surcharge NEPRA revises every month based on generation fuel costs. It can differ wildly between bills, so an honest calculator cannot predict it — this tool shows your slab-based energy charges plus standard taxes, and tells you to check FPA on your actual bill.</p></details><details><summary>Which DISCO rates are built in?</summary><p>Residential non-protected presets for MEPCO (3.95/8.27/13.27/16.62/19.26), LESCO (4.16/8.48/13.48/16.83/19.47) and FESCO (4.03/8.35/13.35/16.70/19.34) PKR/kWh across the five slabs, as of October 2026. Every rate is editable — set exact values from your latest bill for a precise estimate.</p></details>
+  <h2 style="margin-top:44px">More free tools</h2>
+  <div class="cards"><a class="card reveal" href="json-to-csv-converter.html"><span class="cat">Developer</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 00-2 2v4l-2 3 2 3v4a2 2 0 002 2h1"/><path d="M16 3h1a2 2 0 012 2v4l2 3-2 3v4a2 2 0 01-2 2h-1"/></svg></div><h3>JSON to CSV Schema Converter</h3><p>Paste any JSON — nested objects, arrays, API responses — and get clean CSV plus the detected column schema, instantly.</p><span class="go">Open tool →</span></a><a class="card reveal" href="tailwind-glassmorphism-generator.html"><span class="cat">Web design</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 12h18M12 3v18" opacity=".5"/><rect x="8" y="8" width="8" height="8" rx="2"/></svg></div><h3>Tailwind CSS Glassmorphism Generator</h3><p>Design frosted-glass cards with live preview — blur, tint, border, shadow — and copy ready Tailwind classes or raw CSS.</p><span class="go">Open tool →</span></a></div>
+</div></section>
+<script>
+
+var RATES={mepco:[3.95,8.27,13.27,16.62,19.26],lesco:[4.16,8.48,13.48,16.83,19.47],fesco:[4.03,8.35,13.35,16.70,19.34]};
+var SLABS=[[1,100],[101,200],[201,300],[301,700],[701,Infinity]];
+function loadRates(){var p=document.getElementById('disco').value;
+RATES[p].forEach(function(r,i){var el=document.getElementById('r'+i);if(el)el.value=r});calc()}
+function renderT(){var h='<tr><th>Slab (units)</th><th>Rate (PKR/kWh)</th></tr>';
+SLABS.forEach(function(s,i){h+='<tr><td>'+(s[1]===Infinity?('above '+s[0]):(s[0]+'–'+s[1]))+'</td><td><input type="number" id="r'+i+'" value="'+RATES.mepco[i]+'" min="0" step="0.01"></td></tr>'});
+document.getElementById('slabT').innerHTML=h;
+SLABS.forEach(function(s,i){document.getElementById('r'+i).addEventListener('input',calc)})}
+function calc(){var u=+document.getElementById('units').value||0,duty=+document.getElementById('duty').value||0,
+gst=+document.getElementById('gst').value||0,fix=+document.getElementById('fixed').value||0,o=document.getElementById('out');
+var rows='',energy=0;
+SLABS.forEach(function(s,i){var r=+document.getElementById('r'+i).value||0;
+var lo=Math.max(0,u-(s[0]-1));var cap=Math.min(lo,s[1]===Infinity?Infinity:s[1]-s[0]+1);
+var inSlab=Math.max(0,Math.min(u-s[0]+1,s[1]===Infinity?u:s[1]-s[0]+1));
+if(inSlab<=0)return;var amt=inSlab*r;energy+=amt;
+rows+='<div class="r-row"><span>'+s[0]+(s[1]===Infinity?'+':('–'+s[1]))+' units × '+r.toFixed(2)+' — '+inSlab+' units</span><b>PKR '+amt.toLocaleString('en-PK',{minimumFractionDigits:2})+'</b></div>'});
+var d=energy*duty/100,g=energy*gst/100,total=energy+d+g+fix;
+o.innerHTML=(rows||'<div class="r-note">Enter units to see the slab breakdown.</div>')
++'<div class="r-row" style="border-top:2px solid var(--border)"><span><b>Energy charges</b></span><b>PKR '+energy.toLocaleString('en-PK',{minimumFractionDigits:2})+'</b></div>'
++'<div class="r-row"><span>Electricity duty ('+duty+'%)</span><b>PKR '+d.toFixed(2)+'</b></div>'
++'<div class="r-row"><span>GST ('+gst+'%)</span><b>PKR '+g.toFixed(2)+'</b></div>'
++'<div class="r-row"><span>Fixed charges + meter rent</span><b>PKR '+fix.toFixed(2)+'</b></div>'
++'<div class="r-row"><span><b>Estimated bill total</b></span><b class="good">PKR '+total.toLocaleString('en-PK',{maximumFractionDigits:0})+'</b></div>'
++'<div class="r-note">Estimate only. Your actual bill also includes FPA (fuel price adjustment), which changes monthly per NEPRA, plus any surcharges. Slab rates shown are published residential (non-protected) rates as of Oct 2026 — always verify against the current tariff of your DISCO.</div>'}
+['units','duty','gst','fixed'].forEach(function(i){document.getElementById(i).addEventListener('input',calc)});
+document.getElementById('disco').addEventListener('change',loadRates);
+renderT();calc();
+</script>
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div class="fbrand"><a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+      <p>Free, expert-built web tools for developers, designers and everyday users. Instant results, zero signup, everything runs privately in your browser.</p></div>
+    <div class="flinks">
+      <div class="fcol"><h4>Dev tools</h4><a href="json-to-csv-converter.html">JSON to CSV Converter</a><a href="tailwind-glassmorphism-generator.html">Tailwind Glassmorphism</a><a href="free-fire-color-code-generator.html">Free Fire Color Codes</a></div>
+      <div class="fcol"><h4>More tools</h4><a href="electricity-bill-slab-tariff-calculator.html">Bill Slab Calculator</a><a href="cron-expression-builder.html">Cron Builder</a><a href="./#tools">All tools</a></div>
+    </div>
+  </div>
+  <div class="copy">© 2026 ToolSpark · Free online tools, no signup, no uploads · <a href="llms.txt">llms.txt</a></div>
+</div></footer>
+
+<script>
+(function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
+function tsCopy(txt,btn){try{navigator.clipboard.writeText(txt).then(function(){var o=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=o},1600)})}catch(e){}}
+</script>
+</body>
+</html>

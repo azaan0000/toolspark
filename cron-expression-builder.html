@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#2563eb"/>
+<title>Cron Expression Builder & Generator — Visual, Next Run Times</title>
+<meta name="description" content="Cron expression builder and generator: visual 5-field editor, presets, plain-English translation and next run times. 100% client-side."/>
+<link rel="canonical" href="https://azaan0000.github.io/toolspark/cron-expression-builder.html"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232563eb'/%3E%3Cstop offset='1' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Cron Expression Builder & Generator — Visual, Next Run Times"/>
+<meta property="og:description" content="Cron expression builder and generator: visual 5-field editor, presets, plain-English translation and next run times. 100% client-side."/>
+<meta property="og:url" content="https://azaan0000.github.io/toolspark/cron-expression-builder.html"/>
+<meta name="twitter:card" content="summary"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Cron Expression Builder", "description": "Cron expression builder and generator: visual 5-field editor, presets, plain-English translation and next run times. 100% client-side.", "url": "https://azaan0000.github.io/toolspark/cron-expression-builder.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "ToolSpark", "url": "https://azaan0000.github.io/toolspark/"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does this support 6-field cron (with seconds)?", "acceptedAnswer": {"@type": "Answer", "text": "No — this builder targets the standard 5-field UNIX/crontab format used by Linux crontab, most job schedulers and tools like GitHub Actions' cron trigger. Quartz-style 6-field expressions (with a leading seconds field) are a different dialect."}}, {"@type": "Question", "name": "What timezone do the next run times use?", "acceptedAnswer": {"@type": "Answer", "text": "Your browser's local timezone — the same clock your device uses. Note that servers usually run UTC, so a 'daily at 3 AM' job on a UTC server fires at different local times; schedule against the server's timezone, not yours."}}, {"@type": "Question", "name": "Why does my day-of-month + day-of-week combo fire too often?", "acceptedAnswer": {"@type": "Answer", "text": "Standard cron treats two restricted day fields as OR, not AND: 0 0 13 * 5 fires on the 13th AND on every Friday, not only Friday-the-13th. That is defined POSIX behavior, not a bug — restrict only one day field to avoid it."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ToolSpark", "item": "https://azaan0000.github.io/toolspark/"}, {"@type": "ListItem", "position": 2, "name": "Cron Expression Builder", "item": "https://azaan0000.github.io/toolspark/cron-expression-builder.html"}]}</script>
+<style>
+:root{
+  --bg:#f6f8fc;--surface:#ffffff;--surface2:#eef1f9;--text:#0e1430;--muted:#586179;--border:#e4e8f4;
+  --p1:#2563eb;--p2:#7c3aed;--p3:#0891b2;
+  --grad:linear-gradient(120deg,var(--p1),var(--p2) 45%,var(--p3));
+  --shadow:0 8px 30px rgba(37,99,235,.12);--shadow-lg:0 24px 60px rgba(37,99,235,.18);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0a0e1d;--surface:#141a30;--surface2:#1b2240;--text:#eceffa;--muted:#98a2c4;--border:#232b52;
+  --shadow:0 8px 30px rgba(0,0,0,.35);--shadow-lg:0 24px 60px rgba(0,0,0,.5)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+a{color:var(--p1);text-decoration:none}
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--border)}
+.navin{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--text);letter-spacing:-.02em}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
+.links{display:flex;gap:22px;font-size:14.5px;font-weight:600}
+.links a{color:var(--muted);transition:color .2s}
+.links a:hover{color:var(--text)}
+@media(max-width:620px){.links{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:13px;box-shadow:var(--shadow);transition:transform .22s,box-shadow .22s;cursor:pointer;border:0;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn-sm{padding:9px 18px;font-size:13.5px;border-radius:11px}
+.hero{position:relative;padding:84px 0 56px;overflow:hidden}
+.hero.compact{padding:56px 0 30px}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none}
+.glow.g1{width:420px;height:420px;background:#7c3aed;top:-160px;left:-100px}
+.glow.g2{width:360px;height:360px;background:#2563eb;top:-60px;right:-120px;opacity:.35}
+@media(prefers-color-scheme:dark){.glow{opacity:.28}}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--muted);box-shadow:var(--shadow)}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--grad);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+h1{font-size:clamp(32px,5.2vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:22px 0 16px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(15.5px,2.2vw,18.5px);color:var(--muted);max-width:680px}
+.cta-row{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--muted)}
+section{padding:30px 0}
+.sec-title{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-sub{color:var(--muted);max-width:600px;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 24px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;display:block;color:var(--text)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.card .tile{width:48px;height:48px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:var(--shadow)}
+.card h3{font-size:17.5px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+.card p{font-size:14px;color:var(--muted);line-height:1.6}
+.card .cat{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p1);background:color-mix(in srgb,var(--p1) 9%,transparent);border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.card .go{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--p1)}
+.card:hover .go{text-decoration:underline}
+.crumbs{font-size:13px;color:var(--muted);font-weight:600}
+.crumbs a{color:var(--muted)}
+.crumbs a:hover{color:var(--p1)}
+.capsule{display:flex;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.capsule .tag{flex-shrink:0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--grad);border-radius:8px;padding:5px 10px;height:fit-content;margin-top:3px}
+.capsule p{font-size:15px;color:var(--text)}
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:var(--shadow-lg);margin-top:10px}
+.calc h3{font-size:19px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.calc .hint{font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 18px}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:14px 2px 7px}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+textarea{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:400;line-height:1.55;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p1);box-shadow:0 0 0 4px color-mix(in srgb,var(--p1) 18%,transparent)}
+input[type=color]{padding:5px;height:46px;cursor:pointer}
+input[type=range]{padding:0;accent-color:var(--p1);border:none;background:none;box-shadow:none}
+input[type=date]{color-scheme:light dark}
+input[type=checkbox]{width:auto}
+.result{margin-top:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--p1) 8%,var(--surface)),color-mix(in srgb,var(--p3) 8%,var(--surface)));border:1px solid color-mix(in srgb,var(--p1) 22%,var(--border));border-radius:16px;padding:6px 20px}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px dashed var(--border);font-size:14.5px;color:var(--muted)}
+.r-row:last-child{border-bottom:none}
+.r-row b{font-size:16px;color:var(--text);font-weight:800;text-align:right}
+.r-row b.good{color:#0c9d61}
+.r-row b.bad{color:#e11d48}
+@media(prefers-color-scheme:dark){.r-row b.good{color:#34d399}.r-row b.bad{color:#fb7185}}
+.r-note{padding:12px 0;font-size:14px;color:var(--muted)}
+.formula{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:var(--text);overflow-x:auto;margin:14px 0 18px;white-space:nowrap}
+h2{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;margin:38px 0 10px}
+h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:26px 0 8px}
+.prose p{margin:0 0 16px;font-size:15.5px;color:var(--muted)}
+.prose p b{color:var(--text)}
+.prose ul{margin:0 0 16px 22px;color:var(--muted);font-size:15.5px}
+.prose li{margin-bottom:8px}
+details{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin:10px 0;transition:border-color .2s}
+details[open]{border-color:color-mix(in srgb,var(--p1) 35%,var(--border))}
+summary{cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:20px;font-weight:600;color:var(--muted);flex-shrink:0;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg);color:var(--p1)}
+details p{margin-top:12px;font-size:14.5px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.feat .tile{width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat h3{margin:0 0 6px;font-size:16.5px}
+.feat p{font-size:14px;color:var(--muted)}
+.copy-btn{font-size:12.5px;padding:8px 16px;margin-left:10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.code{font-family:ui-monospace,monospace;font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:4px 9px;color:var(--text)}
+.codechip{cursor:pointer;font-family:ui-monospace,monospace;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 13px;color:var(--text);font-weight:600}
+.codechip:hover{border-color:var(--p1)}
+.preview-zone{border-radius:16px;padding:34px 22px;background:linear-gradient(135deg,#f59e0b,#ec4899,#8b5cf6,#3b82f6);background-size:300% 300%;animation:slide 9s linear infinite;display:flex;justify-content:center}
+@keyframes slide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.glass-card{width:100%;max-width:430px;padding:26px;color:#fff}
+.glass-card h4{font-size:19px;font-weight:800;margin-bottom:4px}
+.glass-card p{font-size:13.5px;opacity:.85}
+table.slab{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+table.slab th{text-align:left;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:6px 4px;border-bottom:1px solid var(--border)}
+table.slab td{padding:8px 4px;border-bottom:1px dashed var(--border)}
+table.slab input{padding:8px 10px;font-size:13.5px}
+.seg{display:grid;grid-template-columns:1fr 130px 44px;gap:10px;align-items:end;margin-bottom:10px}
+@media(max-width:640px){.seg{grid-template-columns:1fr 110px 44px}}
+.seg button{height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:16px;cursor:pointer;font-weight:700}
+footer{border-top:1px solid var(--border);margin-top:56px;padding:40px 0 48px;background:var(--surface)}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.fbrand{max-width:340px}
+.fbrand p{font-size:13.5px;color:var(--muted);margin-top:12px}
+.flinks{display:flex;gap:60px;flex-wrap:wrap}
+.fcol h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+.fcol a{display:block;font-size:14px;color:var(--text);margin-bottom:8px;font-weight:600}
+.fcol a:hover{color:var(--p1)}
+.copy{margin-top:36px;font-size:13px;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap navin">
+  <a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+  <nav class="links"><a href="./#tools">All tools</a><a href="./#why">Why free</a></nav>
+  <a class="btn btn-sm" href="./#tools">Get started</a>
+</div></header>
+
+<div class="hero compact"><div class="glow g1"></div><div class="glow g2"></div><div class="wrap" style="position:relative">
+  <nav class="crumbs"><a href="./">ToolSpark</a> › Cron Expression Builder</nav>
+  <h1 style="font-size:clamp(28px,4.4vw,42px)">Cron Expression Builder <span class="grad-text">— free, instant, private</span></h1>
+  <p class="lead">Build 5-field cron expressions visually, get a plain-English description and the next 5 run times — or paste one to decode it.</p>
+  <div class="capsule"><span class="tag">Quick answer</span><p>A cron expression is five space-separated fields — minute, hour, day-of-month, month, day-of-week — that define a recurring schedule: `*/5 * * * *` runs every 5 minutes, `0 3 * * 1` runs every Monday at 3 AM. This builder edits all five fields visually, translates the schedule into plain English, and computes the next five actual run times from your clock.</p></div>
+  <div class="calc">
+    <h3 style="margin-bottom:10px">Cron Expression Builder</h3>
+    <p class="hint">Everything runs locally in your browser — nothing is uploaded, ever.</p>
+    <div class="grid3">
+<div><label>Presets</label><select id="preset"><option value="">Choose a preset…</option>
+<option value="* * * * *">Every minute</option><option value="*/5 * * * *">Every 5 minutes</option>
+<option value="*/15 * * * *">Every 15 minutes</option><option value="0 * * * *">Hourly (at :00)</option>
+<option value="0 */6 * * *">Every 6 hours</option><option value="0 3 * * *">Daily at 3:00 AM</option>
+<option value="30 9 * * 1-5">Weekdays at 9:30 AM</option><option value="0 9 * * 1">Every Monday at 9 AM</option>
+<option value="0 0 1 * *">Monthly (1st, midnight)</option><option value="0 0 1 1 *">Yearly (Jan 1)</option>
+<option value="0 12 */2 * *">Every 2 days at noon</option></select></div>
+<div><label>Expression</label><input type="text" id="expr" value="*/5 * * * *" spellcheck="false"></div>
+<div><label>&nbsp;</label><button class="btn btn-sm" style="width:100%" onclick="decode()">Parse &amp; preview</button></div>
+</div>
+<p class="r-note">Or edit the five fields directly: <b>minute hour day-of-month month day-of-week</b> (0=Sun, standard 5-field UNIX cron).</p>
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px" class="cronrow">
+<div><label>Minute (0–59)</label><input type="text" id="f1" value="*/5"></div>
+<div><label>Hour (0–23)</label><input type="text" id="f2" value="*"></div>
+<div><label>Day of month (1–31)</label><input type="text" id="f3" value="*"></div>
+<div><label>Month (1–12)</label><input type="text" id="f4" value="*"></div>
+<div><label>Day of week (0–6)</label><input type="text" id="f5" value="*"></div>
+</div>
+
+<div class="result" id="out"></div>
+  </div>
+</div></div>
+<section><div class="wrap">
+  <h2>How the cron expression builder works</h2>
+  <div class="formula">Fields: minute (0–59) · hour (0–23) · day of month (1–31) · month (1–12) · day of week (0–6, 0 = Sunday) &nbsp;·&nbsp; Syntax: *, values, ranges (1-5), steps (*/10), lists (1,15,45)</div>
+  <div class="prose"><p>Every field accepts four kinds of values:</p>
+<ul>
+<li><b>*</b> — every possible value ("every minute", "every hour")</li>
+<li><b>A single number</b> — only that value (30 = at minute 30)</li>
+<li><b>A range</b> — 1-5 means 1,2,3,4,5 (classic: 1-5 = weekdays in the dow field)</li>
+<li><b>A step or list</b> — */10 means every 10th value; 0,15,30,45 means those four values</li>
+</ul>
+<p>You can combine them per field with commas: <code>0 9,17 * * 1-5</code> = at 9:00 and 17:00 on weekdays. Two classic gotchas: day 0 and 7 both mean Sunday in the weekday field, and if BOTH day-of-month and day-of-week are restricted (not *), cron fires when <i>either</i> matches — that surprises almost everyone once.</p></div>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Does this support 6-field cron (with seconds)?</summary><p>No — this builder targets the standard 5-field UNIX/crontab format used by Linux crontab, most job schedulers and tools like GitHub Actions' cron trigger. Quartz-style 6-field expressions (with a leading seconds field) are a different dialect.</p></details><details><summary>What timezone do the next run times use?</summary><p>Your browser's local timezone — the same clock your device uses. Note that servers usually run UTC, so a 'daily at 3 AM' job on a UTC server fires at different local times; schedule against the server's timezone, not yours.</p></details><details><summary>Why does my day-of-month + day-of-week combo fire too often?</summary><p>Standard cron treats two restricted day fields as OR, not AND: 0 0 13 * 5 fires on the 13th AND on every Friday, not only Friday-the-13th. That is defined POSIX behavior, not a bug — restrict only one day field to avoid it.</p></details>
+  <h2 style="margin-top:44px">More free tools</h2>
+  <div class="cards"><a class="card reveal" href="json-to-csv-converter.html"><span class="cat">Developer</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 00-2 2v4l-2 3 2 3v4a2 2 0 002 2h1"/><path d="M16 3h1a2 2 0 012 2v4l2 3-2 3v4a2 2 0 01-2 2h-1"/></svg></div><h3>JSON to CSV Schema Converter</h3><p>Paste any JSON — nested objects, arrays, API responses — and get clean CSV plus the detected column schema, instantly.</p><span class="go">Open tool →</span></a><a class="card reveal" href="tailwind-glassmorphism-generator.html"><span class="cat">Web design</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 12h18M12 3v18" opacity=".5"/><rect x="8" y="8" width="8" height="8" rx="2"/></svg></div><h3>Tailwind CSS Glassmorphism Generator</h3><p>Design frosted-glass cards with live preview — blur, tint, border, shadow — and copy ready Tailwind classes or raw CSS.</p><span class="go">Open tool →</span></a></div>
+</div></section>
+<script>
+
+function fm(f,v){if(f==='*')return true;
+return f.split(',').some(function(p){var st=1,b=p;
+var m=p.split('/');if(m.length===2){b=m[0];st=+m[1]}
+if(b==='*')return v%st===0;
+var r=b.split('-');
+if(r.length===2){var a=+r[0],z=+r[1];if(v<a||v>z)return false;return (v-a)%st===0}
+var n=+b;return n===v})}
+function fmw(f,v){ // weekday: 7 == 0 == Sunday
+return f.split(',').some(function(p){var st=1,b=p;
+var m=p.split('/');if(m.length===2){b=m[0];st=+m[1]}
+if(b==='*')return v%st===0;
+if(b==='7')b='0';
+var r=b.split('-');
+if(r.length===2){var a=+r[0],z=+r[1];if(z===7)z=0;if(v<a&&v>z&&!(a<=6&&z===0))return false;if(v<a||v>z)return false;return (v-a)%st===0||((a>z)&&(v>=a||v<=z))}
+var n=+b;return n===v})}
+function describe(f){var m=f[0],h=f[1],dom=f[2],mon=f[3],dow=f[4];
+var when='';var mm=m==='*'?'every minute':(m.startsWith('*/')?'every '+m.slice(2)+' minutes':'at minute '+m);
+var hh=h==='*'?'':(h.startsWith('*/')?', every '+h.slice(2)+' hours':(h.includes(',')?' at hour '+h:' at '+h+':00'));
+var day='';
+if(dow!=='*'&&dom!=='*')day=' on day '+dom+' of the month ('+dow+')';
+else if(dow!=='*'){var w={0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday'};
+day=dow==='1-5'?' on weekdays':dow==='0,6'?' on weekends':(w[+dow]!==undefined?' on '+w[+dow]:' on weekday '+dow)}
+else if(dom!=='*')day=' on day '+dom+' of the month';
+var mo=mon!=='*'?', in month '+mon:'';
+return (mm+hh+day+mo).replace('every minute at hour','every hour at minute')}
+function calc(){var fs=['f1','f2','f3','f4','f5'].map(function(i){return document.getElementById(i).value.trim()});
+document.getElementById('expr').value=fs.join(' ');
+var o=document.getElementById('out');
+try{
+// next 5 runs
+var runs=[];var d=new Date();d.setSeconds(0,0);d.setMinutes(d.getMinutes()+1);
+var lim=new Date(Date.now()+120*864e5);
+while(runs.length<5&&d<lim){
+var ok=fm(fs[0],d.getMinutes())&&fm(fs[1],d.getHours())&&fm(fs[2],d.getDate())&&fm(fs[3],d.getMonth()+1)&&fmw(fs[4],d.getDay());
+if(ok)runs.push(new Date(d));
+d.setMinutes(d.getMinutes()+1)}
+o.innerHTML='<div class="r-row"><span><b>Expression</b></span><b style="font-family:ui-monospace,monospace">'+fs.join(' ')+'</b></div>'
++'<div class="r-row"><span>In plain English</span><b style="text-transform:none;font-size:14px">'+describe(fs)+'</b></div>'
++(runs.length?'<div class="r-row"><span>Next 5 runs (your local time)</span><b style="font-size:13px;font-weight:600;text-align:right;line-height:1.9">'+runs.map(function(r){return r.toLocaleString('en-US',{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}).join('<br>')+'</b></div>':'<div class="r-note">No upcoming matches within 120 days — check your fields.</div>')
+}catch(e){o.innerHTML='<div class="r-note" style="color:#e11d48">Could not parse — use *, */n, ranges (1-5) or lists (1,15,30).</div>'}}
+function decode(){var e=document.getElementById('expr').value.trim().split(/\s+/);
+if(e.length!==5){alert('A cron expression has exactly 5 fields: minute hour day-of-month month day-of-week');return}
+['f1','f2','f3','f4','f5'].forEach(function(i,ix){document.getElementById(i).value=e[ix]});calc()}
+document.getElementById('preset').addEventListener('change',function(){if(this.value)decode()});
+['f1','f2','f3','f4','f5'].forEach(function(i){document.getElementById(i).addEventListener('input',calc)});
+calc();
+</script>
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div class="fbrand"><a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+      <p>Free, expert-built web tools for developers, designers and everyday users. Instant results, zero signup, everything runs privately in your browser.</p></div>
+    <div class="flinks">
+      <div class="fcol"><h4>Dev tools</h4><a href="json-to-csv-converter.html">JSON to CSV Converter</a><a href="tailwind-glassmorphism-generator.html">Tailwind Glassmorphism</a><a href="free-fire-color-code-generator.html">Free Fire Color Codes</a></div>
+      <div class="fcol"><h4>More tools</h4><a href="electricity-bill-slab-tariff-calculator.html">Bill Slab Calculator</a><a href="cron-expression-builder.html">Cron Builder</a><a href="./#tools">All tools</a></div>
+    </div>
+  </div>
+  <div class="copy">© 2026 ToolSpark · Free online tools, no signup, no uploads · <a href="llms.txt">llms.txt</a></div>
+</div></footer>
+
+<script>
+(function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
+function tsCopy(txt,btn){try{navigator.clipboard.writeText(txt).then(function(){var o=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=o},1600)})}catch(e){}}
+</script>
+</body>
+</html>

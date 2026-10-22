@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#2563eb"/>
+<title>JSON to CSV Schema Converter — Free, Private, No Upload</title>
+<meta name="description" content="Free JSON to CSV schema converter: paste JSON, get clean CSV with flattened columns and the detected schema. 100% in-browser, nothing uploaded."/>
+<link rel="canonical" href="https://azaan0000.github.io/toolspark/json-to-csv-converter.html"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232563eb'/%3E%3Cstop offset='1' stop-color='%230891b2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23g)'/%3E%3Ctext x='32' y='45' font-size='34' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="JSON to CSV Schema Converter — Free, Private, No Upload"/>
+<meta property="og:description" content="Free JSON to CSV schema converter: paste JSON, get clean CSV with flattened columns and the detected schema. 100% in-browser, nothing uploaded."/>
+<meta property="og:url" content="https://azaan0000.github.io/toolspark/json-to-csv-converter.html"/>
+<meta name="twitter:card" content="summary"/>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "JSON to CSV Schema Converter", "description": "Free JSON to CSV schema converter: paste JSON, get clean CSV with flattened columns and the detected schema. 100% in-browser, nothing uploaded.", "url": "https://azaan0000.github.io/toolspark/json-to-csv-converter.html", "applicationCategory": "DeveloperApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "publisher": {"@type": "Organization", "name": "ToolSpark", "url": "https://azaan0000.github.io/toolspark/"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my JSON uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Parsing, flattening and CSV generation all happen in your browser with plain JavaScript. The tool works even if you go offline after loading the page — nothing is sent to any server."}}, {"@type": "Question", "name": "How are nested objects handled?", "acceptedAnswer": {"@type": "Answer", "text": "Nested objects are flattened with dot notation (e.g. customer.address.city), which keeps every value as its own CSV column. Arrays of simple values are joined with semicolons; arrays of objects are kept as JSON strings so you can process them downstream."}}, {"@type": "Question", "name": "Does it handle JSON Lines or API responses?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — paste any API response. If the root is an object containing an array (a very common API shape), the tool automatically uses the biggest array of objects as the rows, and the rest still converts as a single-row fallback."}}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "ToolSpark", "item": "https://azaan0000.github.io/toolspark/"}, {"@type": "ListItem", "position": 2, "name": "JSON to CSV Schema Converter", "item": "https://azaan0000.github.io/toolspark/json-to-csv-converter.html"}]}</script>
+<style>
+:root{
+  --bg:#f6f8fc;--surface:#ffffff;--surface2:#eef1f9;--text:#0e1430;--muted:#586179;--border:#e4e8f4;
+  --p1:#2563eb;--p2:#7c3aed;--p3:#0891b2;
+  --grad:linear-gradient(120deg,var(--p1),var(--p2) 45%,var(--p3));
+  --shadow:0 8px 30px rgba(37,99,235,.12);--shadow-lg:0 24px 60px rgba(37,99,235,.18);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0a0e1d;--surface:#141a30;--surface2:#1b2240;--text:#eceffa;--muted:#98a2c4;--border:#232b52;
+  --shadow:0 8px 30px rgba(0,0,0,.35);--shadow-lg:0 24px 60px rgba(0,0,0,.5)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+a{color:var(--p1);text-decoration:none}
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--border)}
+.navin{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--text);letter-spacing:-.02em}
+.mark{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;font-weight:800;font-size:17px;box-shadow:var(--shadow)}
+.links{display:flex;gap:22px;font-size:14.5px;font-weight:600}
+.links a{color:var(--muted);transition:color .2s}
+.links a:hover{color:var(--text)}
+@media(max-width:620px){.links{display:none}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;font-weight:700;font-size:15px;padding:13px 26px;border-radius:13px;box-shadow:var(--shadow);transition:transform .22s,box-shadow .22s;cursor:pointer;border:0;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn-sm{padding:9px 18px;font-size:13.5px;border-radius:11px}
+.hero{position:relative;padding:84px 0 56px;overflow:hidden}
+.hero.compact{padding:56px 0 30px}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none}
+.glow.g1{width:420px;height:420px;background:#7c3aed;top:-160px;left:-100px}
+.glow.g2{width:360px;height:360px;background:#2563eb;top:-60px;right:-120px;opacity:.35}
+@media(prefers-color-scheme:dark){.glow{opacity:.28}}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--muted);box-shadow:var(--shadow)}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--grad);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.6}}
+h1{font-size:clamp(32px,5.2vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:22px 0 16px}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(15.5px,2.2vw,18.5px);color:var(--muted);max-width:680px}
+.cta-row{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--muted)}
+section{padding:30px 0}
+.sec-title{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.sec-sub{color:var(--muted);max-width:600px;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px 24px;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;display:block;color:var(--text)}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.card .tile{width:48px;height:48px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:var(--shadow)}
+.card h3{font-size:17.5px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+.card p{font-size:14px;color:var(--muted);line-height:1.6}
+.card .cat{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--p1);background:color-mix(in srgb,var(--p1) 9%,transparent);border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.card .go{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--p1)}
+.card:hover .go{text-decoration:underline}
+.crumbs{font-size:13px;color:var(--muted);font-weight:600}
+.crumbs a{color:var(--muted)}
+.crumbs a:hover{color:var(--p1)}
+.capsule{display:flex;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin:26px 0;box-shadow:var(--shadow)}
+.capsule .tag{flex-shrink:0;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--grad);border-radius:8px;padding:5px 10px;height:fit-content;margin-top:3px}
+.capsule p{font-size:15px;color:var(--text)}
+.calc{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:30px;box-shadow:var(--shadow-lg);margin-top:10px}
+.calc h3{font-size:19px;font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.calc .hint{font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px 18px}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:14px 2px 7px}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);color:var(--text);border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+textarea{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:400;line-height:1.55;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p1);box-shadow:0 0 0 4px color-mix(in srgb,var(--p1) 18%,transparent)}
+input[type=color]{padding:5px;height:46px;cursor:pointer}
+input[type=range]{padding:0;accent-color:var(--p1);border:none;background:none;box-shadow:none}
+input[type=date]{color-scheme:light dark}
+input[type=checkbox]{width:auto}
+.result{margin-top:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--p1) 8%,var(--surface)),color-mix(in srgb,var(--p3) 8%,var(--surface)));border:1px solid color-mix(in srgb,var(--p1) 22%,var(--border));border-radius:16px;padding:6px 20px}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px dashed var(--border);font-size:14.5px;color:var(--muted)}
+.r-row:last-child{border-bottom:none}
+.r-row b{font-size:16px;color:var(--text);font-weight:800;text-align:right}
+.r-row b.good{color:#0c9d61}
+.r-row b.bad{color:#e11d48}
+@media(prefers-color-scheme:dark){.r-row b.good{color:#34d399}.r-row b.bad{color:#fb7185}}
+.r-note{padding:12px 0;font-size:14px;color:var(--muted)}
+.formula{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13.5px;color:var(--text);overflow-x:auto;margin:14px 0 18px;white-space:nowrap}
+h2{font-size:clamp(22px,3vw,30px);font-weight:800;letter-spacing:-.02em;margin:38px 0 10px}
+h3{font-size:18px;font-weight:800;letter-spacing:-.01em;margin:26px 0 8px}
+.prose p{margin:0 0 16px;font-size:15.5px;color:var(--muted)}
+.prose p b{color:var(--text)}
+.prose ul{margin:0 0 16px 22px;color:var(--muted);font-size:15.5px}
+.prose li{margin-bottom:8px}
+details{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin:10px 0;transition:border-color .2s}
+details[open]{border-color:color-mix(in srgb,var(--p1) 35%,var(--border))}
+summary{cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:20px;font-weight:600;color:var(--muted);flex-shrink:0;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg);color:var(--p1)}
+details p{margin-top:12px;font-size:14.5px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+.feat .tile{width:42px;height:42px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat h3{margin:0 0 6px;font-size:16.5px}
+.feat p{font-size:14px;color:var(--muted)}
+.copy-btn{font-size:12.5px;padding:8px 16px;margin-left:10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.code{font-family:ui-monospace,monospace;font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:4px 9px;color:var(--text)}
+.codechip{cursor:pointer;font-family:ui-monospace,monospace;font-size:13px;background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:6px 13px;color:var(--text);font-weight:600}
+.codechip:hover{border-color:var(--p1)}
+.preview-zone{border-radius:16px;padding:34px 22px;background:linear-gradient(135deg,#f59e0b,#ec4899,#8b5cf6,#3b82f6);background-size:300% 300%;animation:slide 9s linear infinite;display:flex;justify-content:center}
+@keyframes slide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.glass-card{width:100%;max-width:430px;padding:26px;color:#fff}
+.glass-card h4{font-size:19px;font-weight:800;margin-bottom:4px}
+.glass-card p{font-size:13.5px;opacity:.85}
+table.slab{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px}
+table.slab th{text-align:left;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:6px 4px;border-bottom:1px solid var(--border)}
+table.slab td{padding:8px 4px;border-bottom:1px dashed var(--border)}
+table.slab input{padding:8px 10px;font-size:13.5px}
+.seg{display:grid;grid-template-columns:1fr 130px 44px;gap:10px;align-items:end;margin-bottom:10px}
+@media(max-width:640px){.seg{grid-template-columns:1fr 110px 44px}}
+.seg button{height:44px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:16px;cursor:pointer;font-weight:700}
+footer{border-top:1px solid var(--border);margin-top:56px;padding:40px 0 48px;background:var(--surface)}
+.fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.fbrand{max-width:340px}
+.fbrand p{font-size:13.5px;color:var(--muted);margin-top:12px}
+.flinks{display:flex;gap:60px;flex-wrap:wrap}
+.fcol h4{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:12px}
+.fcol a{display:block;font-size:14px;color:var(--text);margin-bottom:8px;font-weight:600}
+.fcol a:hover{color:var(--p1)}
+.copy{margin-top:36px;font-size:13px;color:var(--muted)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap navin">
+  <a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+  <nav class="links"><a href="./#tools">All tools</a><a href="./#why">Why free</a></nav>
+  <a class="btn btn-sm" href="./#tools">Get started</a>
+</div></header>
+
+<div class="hero compact"><div class="glow g1"></div><div class="glow g2"></div><div class="wrap" style="position:relative">
+  <nav class="crumbs"><a href="./">ToolSpark</a> › JSON to CSV Schema Converter</nav>
+  <h1 style="font-size:clamp(28px,4.4vw,42px)">JSON to CSV Schema <span class="grad-text">— free, instant, private</span></h1>
+  <p class="lead">Paste any JSON — nested objects, arrays, API responses — and get clean CSV plus the detected column schema, instantly.</p>
+  <div class="capsule"><span class="tag">Quick answer</span><p>A JSON to CSV converter turns an array of JSON objects into spreadsheet rows: each object becomes a row, each property a column, and nested objects flatten into dotted column names like customer.email. Paste JSON on the left, get CSV plus the detected column schema on the right.</p></div>
+  <div class="calc">
+    <h3 style="margin-bottom:10px">JSON to CSV Schema Converter</h3>
+    <p class="hint">Everything runs locally in your browser — nothing is uploaded, ever.</p>
+    <div class="grid2">
+<div><label>Your JSON (paste or type)</label><textarea id="jin" rows="10" spellcheck="false">{
+  "id": 1,
+  "name": "Azaan Store",
+  "city": "Rawalpindi",
+  "orders": [
+    {"order_no": "DR-1001", "items": 3, "total": 129.99},
+    {"order_no": "DR-1002", "items": 1, "total": 44.50}
+  ],
+  "customer": {"email": "azaan@example.com", "vip": true},
+  "tags": ["retail", "wholesale"]
+}</textarea></div>
+<div><label>CSV output</label><textarea id="jout" rows="10" spellcheck="false" readonly style="background:var(--surface)"></textarea></div>
+</div>
+<div class="grid3" style="margin-top:4px">
+<div><label>Delimiter</label><select id="delim"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></div>
+<div style="display:flex;align-items:flex-end;gap:10px;padding-top:14px"><button class="btn btn-sm" onclick="convert()">Convert</button><button class="btn btn-ghost btn-sm" onclick="tsCopy(document.getElementById('jout').value,this,'csv')">Copy CSV</button></div>
+<div style="display:flex;align-items:flex-end;padding-top:14px"><button class="btn btn-ghost btn-sm" onclick="downloadCsv()">Download .csv</button></div>
+</div>
+<p class="r-note" id="jstat" style="margin-top:10px">Click Convert — nested objects flatten into dotted columns automatically.</p>
+<div class="result" id="schema" style="display:none"></div>
+  </div>
+</div></div>
+<section><div class="wrap">
+  <h2>How the json to csv schema converter works</h2>
+  <div class="formula">Column set = union of all keys (nested objects flattened as parent.child) &nbsp;·&nbsp; Cell = escaped string (quotes doubled, delimiters wrapped) &nbsp;·&nbsp; Row = one JSON object</div>
+  <div class="prose"><p>CSV needs one flat table; JSON is a tree. The converter bridges that gap in three steps:</p>
+<ul>
+<li><b>Row detection:</b> a root array becomes rows directly. A root object is scanned for the largest array of objects (like <code>orders</code> above) and that becomes the rows.</li>
+<li><b>Schema flattening:</b> nested objects flatten into dotted columns (<code>customer.email</code>), so no data is lost. Arrays of primitives join with "; ", deeper arrays stay as JSON strings.</li>
+<li><b>Escaping:</b> values containing the delimiter, quotes or newlines are quoted and escaped — so Excel, Google Sheets and pandas read the output correctly.</li>
+</ul>
+<p>The detected schema shows every column the converter found — useful before you import data anywhere. A root object wraps into a single row.</p></div>
+  <h2>Frequently asked questions</h2>
+  <details><summary>Is my JSON uploaded anywhere?</summary><p>No. Parsing, flattening and CSV generation all happen in your browser with plain JavaScript. The tool works even if you go offline after loading the page — nothing is sent to any server.</p></details><details><summary>How are nested objects handled?</summary><p>Nested objects are flattened with dot notation (e.g. customer.address.city), which keeps every value as its own CSV column. Arrays of simple values are joined with semicolons; arrays of objects are kept as JSON strings so you can process them downstream.</p></details><details><summary>Does it handle JSON Lines or API responses?</summary><p>Yes — paste any API response. If the root is an object containing an array (a very common API shape), the tool automatically uses the biggest array of objects as the rows, and the rest still converts as a single-row fallback.</p></details>
+  <h2 style="margin-top:44px">More free tools</h2>
+  <div class="cards"><a class="card reveal" href="tailwind-glassmorphism-generator.html"><span class="cat">Web design</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 12h18M12 3v18" opacity=".5"/><rect x="8" y="8" width="8" height="8" rx="2"/></svg></div><h3>Tailwind CSS Glassmorphism Generator</h3><p>Design frosted-glass cards with live preview — blur, tint, border, shadow — and copy ready Tailwind classes or raw CSS.</p><span class="go">Open tool →</span></a><a class="card reveal" href="free-fire-color-code-generator.html"><span class="cat">Gaming</span><div class="tile"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r="1"/><circle cx="18" cy="13.5" r="1"/><path d="M17 5H7a5 5 0 00-5 5v4a4 4 0 004 4l2-2h4l2 2a4 4 0 004-4v-4a5 5 0 00-5-5z"/></svg></div><h3>Free Fire Color Code Generator (Bio)</h3><p>Build colorful Free Fire bios with [hex] color codes — preview, presets and one-tap copy for your profile signature.</p><span class="go">Open tool →</span></a></div>
+</div></section>
+<script>
+
+function escV(v,d){v=v==null?'':String(v);return new RegExp('["'+d+'\n]').test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+function flatten(o,p,out){Object.keys(o||{}).forEach(function(k){var v=o[k],key=p?p+'.'+k:k;
+if(v&&typeof v==='object'&&!Array.isArray(v)){flatten(v,key,out)}
+else if(Array.isArray(v)){out[key]=(v.length&&v.every(function(x){return x==null||typeof x!=='object'}))?v.join('; '):JSON.stringify(v)}
+else{out[key]=v}})}
+function convert(){var stat=document.getElementById('jstat'),sch=document.getElementById('schema');
+try{var j=JSON.parse(document.getElementById('jin').value)}catch(e){stat.textContent='Invalid JSON: '+e.message;sch.style.display='none';return}
+var d=j;
+if(!Array.isArray(j)){var ak=null,al=0;Object.keys(j||{}).forEach(function(k){if(Array.isArray(j[k])&&j[k].length&&j[k].every(function(x){return x&&typeof x==='object'})&&j[k].length>al){ak=k;al=j[k].length}});
+d=ak?j[ak]:[j];}
+if(!d.length){stat.textContent='No rows found in the JSON.';return}
+var del=document.getElementById('delim').value;if(del==='\\t')del='\t';
+var rows=d.map(function(r){var out={};flatten(r,'',out);return out});
+var cols=[];rows.forEach(function(r){Object.keys(r).forEach(function(k){if(cols.indexOf(k)<0)cols.push(k)})});
+var csv=[cols.map(function(c){return escV(c,del)}).join(del)].concat(rows.map(function(r){return cols.map(function(c){return escV(r[c],del)}).join(del)})).join('\n');
+document.getElementById('jout').value=csv;
+stat.textContent=rows.length+' rows × '+cols.length+' columns — converted instantly in your browser';
+sch.style.display='block';
+sch.innerHTML='<div class="r-row"><span>Detected schema</span><b>'+cols.length+' columns</b></div><div class="tags">'+cols.map(function(c){return '<span class="code">'+c+'</span>'}).join('')+'</div>';}
+function downloadCsv(){var csv=document.getElementById('jout').value;if(!csv){convert();csv=document.getElementById('jout').value}
+var b=new Blob([csv],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='converted.csv';a.click();}
+convert();
+</script>
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div class="fbrand"><a class="brand" href="./"><span class="mark">T</span>ToolSpark</a>
+      <p>Free, expert-built web tools for developers, designers and everyday users. Instant results, zero signup, everything runs privately in your browser.</p></div>
+    <div class="flinks">
+      <div class="fcol"><h4>Dev tools</h4><a href="json-to-csv-converter.html">JSON to CSV Converter</a><a href="tailwind-glassmorphism-generator.html">Tailwind Glassmorphism</a><a href="free-fire-color-code-generator.html">Free Fire Color Codes</a></div>
+      <div class="fcol"><h4>More tools</h4><a href="electricity-bill-slab-tariff-calculator.html">Bill Slab Calculator</a><a href="cron-expression-builder.html">Cron Builder</a><a href="./#tools">All tools</a></div>
+    </div>
+  </div>
+  <div class="copy">© 2026 ToolSpark · Free online tools, no signup, no uploads · <a href="llms.txt">llms.txt</a></div>
+</div></footer>
+
+<script>
+(function(){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});})();
+function tsCopy(txt,btn){try{navigator.clipboard.writeText(txt).then(function(){var o=btn.textContent;btn.textContent='Copied!';setTimeout(function(){btn.textContent=o},1600)})}catch(e){}}
+</script>
+</body>
+</html>
